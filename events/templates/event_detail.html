@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load tags %}
+{% load bootstrap3 %}
+
+{% block title %}Event{% endblock %}
+
+{% block content %}
+<h2>Event</h2>
+<div class="row">
+    <div class="col-md-6">{{ object.title }}</div>
+    <div class="col-md-6 text-right">{{ object.date|date }}</div>
+</div>
+<div class="description">
+    {{ object.description|linebreaks }}
+</div>
+{% if object.attending.count %}
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="attending">People attending event</h3>
+        <ul class="list-inline">
+        {% for attend in object.attending.all %}
+            <li>{{ attend.user.email|convert_to_username }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% if not already_attending %}
+  <div class="attend-link">
+    <a href="{% url 'event:attend' pk=event.id %}">Attend this event</a>
+  </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load tags %}
+
+{% block title %}Events{% endblock %}
+
+{% block content %}
+
+<h2>Events</h2>
+{% if object_list %}
+<table class="table">
+  <tbody>
+   {% for event in object_list %}
+    <tr>
+      <td>{{ event.date|date }}</td>
+      <td><a href="{% url 'event:detail' pk=event.id %}">{{ event.title }}</a></td>
+      <td>{{ event.user.email|convert_to_username }}</td>
+      <td>{{ event.attending.count }} attending</td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+  {% if is_paginated %}
+  <nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center pagination-sm">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'event:list' %}?page={{ page_obj.previous_page_number }}" tabindex="-1">Previous</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        {% endif %} 
+        {% for object in page_obj.paginator.page_range %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'event:list' %}?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+        </li>
+        {% endfor %} 
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="{% url 'event:list' %}?page={{ page_obj.next_page_number }}">Next</a>
+        </li>
+        {% else %}
+        <li class="page-item disabled">
+            <a class="page-link" href="#">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+  </nav>
+  {% endif %}
+
+{% else %}
+  No events yet
+{% endif %}
+
+{% endblock %}

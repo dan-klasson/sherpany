@@ -18,7 +18,7 @@ class TestLogin(TestCase):
     def test_success(self):
         data = {"username": "john@example.com", "password": "haxOr863"}
         response = self.client.post(reverse('login'), data, follow=True)
-        self.assertRedirects(response, reverse('home'))
+        self.assertRedirects(response, reverse('event:list'))
         
     def test_failure(self):
         data = {"username": "john@example.com", "password": "wront-pwd"}

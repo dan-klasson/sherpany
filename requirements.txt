@@ -1,3 +1,5 @@
 django-bootstrap3
 factory_boy
 django-extensions
+django-bootstrap-datepicker-plus
+freezegun
