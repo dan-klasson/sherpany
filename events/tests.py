@@ -69,6 +69,11 @@ class TestUpdateEvent(TestCase):
         self.event = EventFactory(user=user)
 
     def test_unauth_user(self):
+        response = self.client.get(reverse('event:update'))
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_unauth_user(self):
         url = reverse('event:update', kwargs={"pk": self.event.pk})
         response = self.client.get(url)
 
@@ -90,6 +95,12 @@ class TestDetailEvent(TestCase):
             password='12345'
         )
         self.event = EventFactory(user=user, title="Detail Event")
+
+    def test_unauth_user(self):
+        url = reverse('event:detail', kwargs={"pk": self.event.pk})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 404)
 
     def test_event_data(self):
         url = reverse('event:detail', kwargs={"pk": self.event.pk})

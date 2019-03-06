@@ -12,7 +12,13 @@
    {% for event in object_list %}
     <tr>
       <td>{{ event.date|date }}</td>
-      <td><a href="{% url 'event:detail' pk=event.id %}">{{ event.title }}</a></td>
+      <td>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'event:detail' pk=event.id %}">{{ event.title }}</a>
+        {% else %}
+            {{ event.title }}
+        {% endif %}
+      </td>
       <td>{{ event.user.email|convert_to_username }}</td>
       <td>{{ event.attending.count }} attending</td>
     </tr>

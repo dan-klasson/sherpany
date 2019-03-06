@@ -19,7 +19,7 @@ class EventListView(ListView):
     paginate_by = 20
     template_name = 'event_list.html'
 
-class EventDetailView(DetailView):
+class EventDetailView(LoginRequiredMixin, DetailView):
     model = Event
     template_name = 'event_detail.html'
 
@@ -34,7 +34,7 @@ class EventDetailView(DetailView):
             context.update({'already_attending': True})
         return context
 
-class EventUpdateView(UpdateView):
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     model = Event
     fields = ['title', 'description', 'date']
     template_name = 'event_form.html'
@@ -64,7 +64,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         form.instance.user = self.request.user
         return super(EventCreateView, self).form_valid(form)
 
-class AttendanceView(RedirectView):
+class AttendanceView(LoginRequiredMixin, RedirectView):
     url = reverse_lazy('event:list')
 
     def get_redirect_url(self, *args, **kwargs):
